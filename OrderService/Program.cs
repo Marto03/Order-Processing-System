@@ -27,6 +27,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddSingleton<RabbitMQService>();
 
 var app = builder.Build();
 
@@ -41,10 +42,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseMiddleware<ValidationExceptionMiddleware>();
+
 app.UseAuthorization();
 
 app.MapControllers();
-
-app.UseMiddleware<ValidationExceptionMiddleware>();
 
 app.Run();

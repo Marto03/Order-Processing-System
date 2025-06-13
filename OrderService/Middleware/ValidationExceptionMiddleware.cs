@@ -1,4 +1,6 @@
 ﻿using FluentValidation;
+using System.Net;
+using System.Text.Json;
 
 namespace OrderService.Middleware
 {
@@ -13,13 +15,20 @@ namespace OrderService.Middleware
             {
                 await _next(context);
             }
-            catch (ValidationException ex)
+            catch (ValidationException ex) // FluentValidation exception
             {
-                context.Response.StatusCode = 400;
-                await context.Response.WriteAsJsonAsync(new
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                context.Response.ContentType = "application/json";
+
+                var errors = ex.Errors.Select(e => new
                 {
-                    Errors = ex.Errors.Select(e => new { e.PropertyName, e.ErrorMessage })
+                    Property = e.PropertyName,
+                    Error = e.ErrorMessage
                 });
+
+                var response = JsonSerializer.Serialize(new { Errors = errors });
+
+                await context.Response.WriteAsync(response);
             }
         }
     }

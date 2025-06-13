@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway", "ApiGateway\Ap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{91D74937-BB65-4346-9577-1864D4BFB0E2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService", "UserService\UserService.csproj", "{E959E7C6-2C76-434B-97EE-9060BCD269FF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{91D74937-BB65-4346-9577-1864D4BFB0E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91D74937-BB65-4346-9577-1864D4BFB0E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91D74937-BB65-4346-9577-1864D4BFB0E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E959E7C6-2C76-434B-97EE-9060BCD269FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E959E7C6-2C76-434B-97EE-9060BCD269FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E959E7C6-2C76-434B-97EE-9060BCD269FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E959E7C6-2C76-434B-97EE-9060BCD269FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
