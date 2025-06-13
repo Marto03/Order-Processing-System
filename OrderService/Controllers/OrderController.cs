@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using OrderService.DTOs;
 using OrderService.Models;
 using OrderService.Services;
 
@@ -9,41 +11,42 @@ namespace OrderService.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IOrdersService _orderService;
+        private readonly IMapper _mapper;
 
-        // Инжектиране на OrderService чрез Dependency Injection
-        public OrderController(IOrdersService orderService)
+        public OrderController(IOrdersService orderService, IMapper mapper)
         {
             _orderService = orderService;
+            _mapper = mapper;
         }
 
-        // GET: api/order
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Order>>> GetAllOrders()
+        public async Task<ActionResult<IEnumerable<OrderDto>>> GetAllOrders()
         {
             var orders = await _orderService.GetAllAsync();
-            return Ok(orders);
+            var orderDtos = _mapper.Map<IEnumerable<OrderDto>>(orders);
+            return Ok(orderDtos);
         }
 
-        // GET: api/order/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Order>> GetOrderById(int id)
+        public async Task<ActionResult<OrderDto>> GetOrderById(int id)
         {
             var order = await _orderService.GetByIdAsync(id);
             if (order == null)
                 return NotFound();
 
-            return Ok(order);
+            return Ok(_mapper.Map<OrderDto>(order));
         }
 
-        // POST: api/order
         [HttpPost]
-        public async Task<ActionResult<Order>> CreateOrder(Order order)
+        public async Task<ActionResult<OrderDto>> CreateOrder(CreateOrderDto createOrderDto)
         {
+            var order = _mapper.Map<Order>(createOrderDto);
             var createdOrder = await _orderService.CreateAsync(order);
-            return CreatedAtAction(nameof(GetOrderById), new { id = createdOrder.Id }, createdOrder);
+            var orderDto = _mapper.Map<OrderDto>(createdOrder);
+
+            return CreatedAtAction(nameof(GetOrderById), new { id = orderDto.Id }, orderDto);
         }
 
-        // DELETE: api/order/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrder(int id)
         {
