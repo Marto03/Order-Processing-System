@@ -3,20 +3,32 @@
   "WorkspaceRootPath": "C:\\New folder\\Order Processing System\\OrderSystem\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A38BB360-0FB4-4AC2-9173-DDD562BAE56A}|OrderService\\OrderService.csproj|c:\\new folder\\order processing system\\ordersystem\\orderservice\\controllers\\weatherforecastcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A38BB360-0FB4-4AC2-9173-DDD562BAE56A}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\controllers\\weatherforecastcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A38BB360-0FB4-4AC2-9173-DDD562BAE56A}|OrderService\\OrderService.csproj|c:\\new folder\\order processing system\\ordersystem\\orderservice\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A38BB360-0FB4-4AC2-9173-DDD562BAE56A}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A38BB360-0FB4-4AC2-9173-DDD562BAE56A}|OrderService\\OrderService.csproj|c:\\new folder\\order processing system\\ordersystem\\orderservice\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A38BB360-0FB4-4AC2-9173-DDD562BAE56A}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A38BB360-0FB4-4AC2-9173-DDD562BAE56A}|OrderService\\OrderService.csproj|c:\\new folder\\order processing system\\ordersystem\\orderservice\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A38BB360-0FB4-4AC2-9173-DDD562BAE56A}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A38BB360-0FB4-4AC2-9173-DDD562BAE56A}|OrderService\\OrderService.csproj|c:\\new folder\\order processing system\\ordersystem\\orderservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A38BB360-0FB4-4AC2-9173-DDD562BAE56A}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{A38BB360-0FB4-4AC2-9173-DDD562BAE56A}|OrderService\\OrderService.csproj|c:\\new folder\\order processing system\\ordersystem\\orderservice\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A38BB360-0FB4-4AC2-9173-DDD562BAE56A}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A38BB360-0FB4-4AC2-9173-DDD562BAE56A}|OrderService\\OrderService.csproj|c:\\new folder\\order processing system\\ordersystem\\orderservice\\models\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A38BB360-0FB4-4AC2-9173-DDD562BAE56A}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\models\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A38BB360-0FB4-4AC2-9173-DDD562BAE56A}|OrderService\\OrderService.csproj|c:\\new folder\\order processing system\\ordersystem\\orderservice\\services\\ordersservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A38BB360-0FB4-4AC2-9173-DDD562BAE56A}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\services\\ordersservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A38BB360-0FB4-4AC2-9173-DDD562BAE56A}|OrderService\\OrderService.csproj|c:\\new folder\\order processing system\\ordersystem\\orderservice\\orderservice.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{A38BB360-0FB4-4AC2-9173-DDD562BAE56A}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\orderservice.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A38BB360-0FB4-4AC2-9173-DDD562BAE56A}|OrderService\\OrderService.csproj|c:\\new folder\\order processing system\\ordersystem\\orderservice\\services\\iordersservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -31,20 +43,12 @@
       "RelativeMoniker": "D:0:0:{A38BB360-0FB4-4AC2-9173-DDD562BAE56A}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\repositories\\iorderrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A38BB360-0FB4-4AC2-9173-DDD562BAE56A}|OrderService\\OrderService.csproj|c:\\new folder\\order processing system\\ordersystem\\orderservice\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{A38BB360-0FB4-4AC2-9173-DDD562BAE56A}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A38BB360-0FB4-4AC2-9173-DDD562BAE56A}|OrderService\\OrderService.csproj|c:\\new folder\\order processing system\\ordersystem\\orderservice\\data\\orderdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A38BB360-0FB4-4AC2-9173-DDD562BAE56A}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\data\\orderdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A38BB360-0FB4-4AC2-9173-DDD562BAE56A}|OrderService\\OrderService.csproj|c:\\new folder\\order processing system\\ordersystem\\orderservice\\models\\orderitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A38BB360-0FB4-4AC2-9173-DDD562BAE56A}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\models\\orderitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A38BB360-0FB4-4AC2-9173-DDD562BAE56A}|OrderService\\OrderService.csproj|c:\\new folder\\order processing system\\ordersystem\\orderservice\\models\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A38BB360-0FB4-4AC2-9173-DDD562BAE56A}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\models\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{65578EB0-578C-487F-BE16-096B5DF82F85}|ApiGateway\\ApiGateway.csproj|c:\\new folder\\order processing system\\ordersystem\\apigateway\\apigateway.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
@@ -71,32 +75,45 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "WeatherForecastController.cs",
-              "DocumentMoniker": "C:\\New folder\\Order Processing System\\OrderSystem\\OrderService\\Controllers\\WeatherForecastController.cs",
-              "RelativeDocumentMoniker": "OrderService\\Controllers\\WeatherForecastController.cs",
-              "ToolTip": "C:\\New folder\\Order Processing System\\OrderSystem\\OrderService\\Controllers\\WeatherForecastController.cs",
-              "RelativeToolTip": "OrderService\\Controllers\\WeatherForecastController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAYAAAAmAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-13T10:14:07.072Z",
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "C:\\New folder\\Order Processing System\\OrderSystem\\OrderService\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "OrderService\\Properties\\launchSettings.json",
+              "ToolTip": "C:\\New folder\\Order Processing System\\OrderSystem\\OrderService\\Properties\\launchSettings.json",
+              "RelativeToolTip": "OrderService\\Properties\\launchSettings.json",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAAB4AAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-06-13T10:24:34.287Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 6,
+              "Title": "OrderService",
+              "DocumentMoniker": "C:\\New folder\\Order Processing System\\OrderSystem\\OrderService\\OrderService.csproj",
+              "RelativeDocumentMoniker": "OrderService\\OrderService.csproj",
+              "ToolTip": "C:\\New folder\\Order Processing System\\OrderSystem\\OrderService\\OrderService.csproj",
+              "RelativeToolTip": "OrderService\\OrderService.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-06-13T10:20:29.776Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "OrderController.cs",
               "DocumentMoniker": "C:\\New folder\\Order Processing System\\OrderSystem\\OrderService\\Controllers\\OrderController.cs",
               "RelativeDocumentMoniker": "OrderService\\Controllers\\OrderController.cs",
               "ToolTip": "C:\\New folder\\Order Processing System\\OrderSystem\\OrderService\\Controllers\\OrderController.cs",
               "RelativeToolTip": "OrderService\\Controllers\\OrderController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAApAAAAAAAAAA==",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAuwA4AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-13T10:12:50.035Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "OrdersService.cs",
               "DocumentMoniker": "C:\\New folder\\Order Processing System\\OrderSystem\\OrderService\\Services\\OrdersService.cs",
               "RelativeDocumentMoniker": "OrderService\\Services\\OrdersService.cs",
@@ -109,7 +126,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 7,
               "Title": "IOrdersService.cs",
               "DocumentMoniker": "C:\\New folder\\Order Processing System\\OrderSystem\\OrderService\\Services\\IOrdersService.cs",
               "RelativeDocumentMoniker": "OrderService\\Services\\IOrdersService.cs",
@@ -117,12 +134,11 @@
               "RelativeToolTip": "OrderService\\Services\\IOrdersService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-13T09:59:43.732Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-13T09:59:43.732Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 8,
               "Title": "OrderRepository.cs",
               "DocumentMoniker": "C:\\New folder\\Order Processing System\\OrderSystem\\OrderService\\Repositories\\OrderRepository.cs",
               "RelativeDocumentMoniker": "OrderService\\Repositories\\OrderRepository.cs",
@@ -130,12 +146,11 @@
               "RelativeToolTip": "OrderService\\Repositories\\OrderRepository.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-13T09:59:14.538Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-13T09:59:14.538Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 9,
               "Title": "IOrderRepository.cs",
               "DocumentMoniker": "C:\\New folder\\Order Processing System\\OrderSystem\\OrderService\\Repositories\\IOrderRepository.cs",
               "RelativeDocumentMoniker": "OrderService\\Repositories\\IOrderRepository.cs",
@@ -143,12 +158,11 @@
               "RelativeToolTip": "OrderService\\Repositories\\IOrderRepository.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-13T09:57:12.586Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-13T09:57:12.586Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 1,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\New folder\\Order Processing System\\OrderSystem\\OrderService\\appsettings.json",
               "RelativeDocumentMoniker": "OrderService\\appsettings.json",
@@ -161,7 +175,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 10,
               "Title": "OrderDbContext.cs",
               "DocumentMoniker": "C:\\New folder\\Order Processing System\\OrderSystem\\OrderService\\Data\\OrderDbContext.cs",
               "RelativeDocumentMoniker": "OrderService\\Data\\OrderDbContext.cs",
@@ -173,7 +187,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 11,
               "Title": "OrderItem.cs",
               "DocumentMoniker": "C:\\New folder\\Order Processing System\\OrderSystem\\OrderService\\Models\\OrderItem.cs",
               "RelativeDocumentMoniker": "OrderService\\Models\\OrderItem.cs",
@@ -185,19 +199,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 4,
               "Title": "Order.cs",
               "DocumentMoniker": "C:\\New folder\\Order Processing System\\OrderSystem\\OrderService\\Models\\Order.cs",
               "RelativeDocumentMoniker": "OrderService\\Models\\Order.cs",
               "ToolTip": "C:\\New folder\\Order Processing System\\OrderSystem\\OrderService\\Models\\Order.cs",
               "RelativeToolTip": "OrderService\\Models\\Order.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-13T08:11:07.398Z"
+              "WhenOpened": "2025-06-13T08:11:07.398Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "ApiGateway.csproj",
               "DocumentMoniker": "C:\\New folder\\Order Processing System\\OrderSystem\\ApiGateway\\ApiGateway.csproj",
               "RelativeDocumentMoniker": "ApiGateway\\ApiGateway.csproj",
@@ -205,11 +220,12 @@
               "RelativeToolTip": "ApiGateway\\ApiGateway.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-06-13T08:08:09.222Z"
+              "WhenOpened": "2025-06-13T08:08:09.222Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "Class1.cs",
               "DocumentMoniker": "C:\\New folder\\Order Processing System\\OrderSystem\\Shared\\Class1.cs",
               "RelativeDocumentMoniker": "Shared\\Class1.cs",
@@ -227,7 +243,7 @@
               "RelativeDocumentMoniker": "OrderService\\Program.cs",
               "ToolTip": "C:\\New folder\\Order Processing System\\OrderSystem\\OrderService\\Program.cs",
               "RelativeToolTip": "OrderService\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAABoAAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-13T08:04:40.522Z",
               "EditorCaption": ""
