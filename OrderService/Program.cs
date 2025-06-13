@@ -1,11 +1,17 @@
 using Microsoft.EntityFrameworkCore;
 using OrderService.Data;
+using OrderService.Repositories;
+using OrderService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Добавяме OrderDbContext и му казваме да използва PostgreSQL
 builder.Services.AddDbContext<OrderDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// 2. Регистрация на слоевете в DI контейнера
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrdersService, OrdersService>();
 
 // Добавяме контролери (или минимални API-та)
 builder.Services.AddControllers();
