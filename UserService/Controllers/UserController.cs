@@ -1,15 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using UserService.Data;
-using UserService.Models;
-using UserService.Repositories;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using AutoMapper;
-using UserService.Data;
-using UserService.DTOs;
-using UserService.Models;
+﻿using AutoMapper;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Mvc;
+using Shared.DTOs;
+using UserService.Data;
+using UserService.Models;
 
 namespace UserService.Controllers
 {
@@ -19,9 +14,9 @@ namespace UserService.Controllers
     {
         private readonly UserDbContext _context;
         private readonly IMapper _mapper;
-        private readonly IValidator<UserCreateDto> _validator;
+        private readonly IValidator<UserDTO> _validator;
 
-        public UsersController(UserDbContext context, IMapper mapper, IValidator<UserCreateDto> validator)
+        public UsersController(UserDbContext context, IMapper mapper, IValidator<UserDTO> validator)
         {
             _context = context;
             _mapper = mapper;
@@ -30,7 +25,7 @@ namespace UserService.Controllers
 
         // Регистрация на потребител
         [HttpPost("register")]
-        public async Task<IActionResult> Register(UserCreateDto dto)
+        public async Task<IActionResult> Register(UserDTO dto)
         {
             // Валидираме входните данни
             ValidationResult result = await _validator.ValidateAsync(dto);
@@ -57,5 +52,19 @@ namespace UserService.Controllers
             if (user == null) return NotFound();
             return Ok(user);
         }
+
+        //// Примерна реализация, по-добре да е през service
+        //[HttpGet("{id}")]
+        //public ActionResult<UserDTO> GetUserById(int id)
+        //{
+        //    // TODO: вземи user от DB, примерно:
+        //    var user = new UserDTO
+        //    {
+        //        Id = id,
+        //        UserName = "testuser"
+        //    };
+
+        //    return Ok(user);
+        //}
     }
 }

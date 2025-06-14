@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using OrderService.DTOs;
 using OrderService.Models;
 using OrderService.Services;
+using Shared.DTOs;
 
 namespace OrderService.Controllers
 {

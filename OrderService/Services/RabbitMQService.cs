@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-using RabbitMQ.Client;
+﻿using RabbitMQ.Client;
 using System.Text.Json;
 using System.Text;
 using Microsoft.Extensions.Configuration;
@@ -28,7 +27,6 @@ namespace OrderService.Services
 
             _exchangeName = configuration["RabbitMQ:ExchangeName"];
             _routingKey = configuration["RabbitMQ:RoutingKey"];
-
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
 

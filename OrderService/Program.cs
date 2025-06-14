@@ -1,18 +1,22 @@
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using OrderService;
 using OrderService.Data;
 using OrderService.Middleware;
 using OrderService.Repositories;
 using OrderService.Services;
 using OrderService.Validators;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Добавяме OrderDbContext и му казваме да използва PostgreSQL
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ OrderDbContext пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ PostgreSQL
 builder.Services.AddDbContext<OrderDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// 2. Регистрация на слоевете в DI контейнера
+// 2. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ DI пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrdersService, OrdersService>();
 
@@ -22,16 +26,40 @@ builder.Services.AddControllers()
         fv.RegisterValidatorsFromAssemblyContaining<CreateOrderDtoValidator>();
     });
 
-// Добавяме контролери (или минимални API-та)
+// Р—Р°СЂРµР¶РґР°РјРµ РЅР°СЃС‚СЂРѕР№РєРёС‚Рµ
+var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtSettings["Issuer"],
+        ValidAudience = jwtSettings["Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]))
+    };
+});
+
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ API-пїЅпїЅ)
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddSingleton<RabbitMQService>();
+builder.Services.AddHttpClient();
+builder.Services.AddSingleton<JwtTokenService>();
 
 var app = builder.Build();
 
-// Middleware за разработка – Swagger
+// Middleware пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ Swagger
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -44,6 +72,7 @@ app.UseHttpsRedirection();
 
 app.UseMiddleware<ValidationExceptionMiddleware>();
 
+app.UseAuthentication(); // РњРЅРѕРіРѕ РІР°Р¶РЅРѕ
 app.UseAuthorization();
 
 app.MapControllers();

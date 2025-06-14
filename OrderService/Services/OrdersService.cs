@@ -1,23 +1,25 @@
-﻿using OrderService.DTOs;
-using OrderService.Models;
+﻿using OrderService.Models;
 using OrderService.Repositories;
+using Shared.DTOs;
 
 namespace OrderService.Services
 {
     // Имплементация на бизнес логиката чрез репозиторито
     public class OrdersService : IOrdersService
     {
+        private readonly HttpClient _httpClient;
         private readonly IOrderRepository _repository;
         private readonly RabbitMQService _rabbitMqService;
-        // Инициализация на HttpClient (най-добре през DI)
-        private readonly HttpClient _httpClient;
+        private readonly string _userServiceBaseUrl;
 
-        public OrdersService(IOrderRepository repository, RabbitMQService rabbitMqService, HttpClient httpClient)
+        public OrdersService(HttpClient httpClient, IOrderRepository repository, RabbitMQService rabbitMqService, IConfiguration configuration)
         {
+            _httpClient = httpClient;
             _repository = repository;
             _rabbitMqService = rabbitMqService;
-            _httpClient = httpClient;
+            _userServiceBaseUrl = configuration["Services:UserService"];
         }
+
 
         public async Task<IEnumerable<Order>> GetAllAsync()
         {
@@ -31,24 +33,27 @@ namespace OrderService.Services
 
         public async Task<Order> CreateAsync(Order order)
         {
-            // Викаме UserService API, за да вземем User данни
-            var userResponse = await _httpClient.GetAsync($"http://userservice/api/users/{order.UserId}");
+            var userResponse = await _httpClient.GetAsync($"{_userServiceBaseUrl}/api/users/{order.UserId}");
             if (!userResponse.IsSuccessStatusCode)
             {
                 throw new Exception("User not found");
             }
 
-            var userDto = await userResponse.Content.ReadFromJsonAsync<UserDto>();
+            var userDto = await userResponse.Content.ReadFromJsonAsync<UserDTO>();
+            if (userDto == null)
+            {
+                throw new Exception("Could not deserialize UserDto");
+            }
 
-            // Създаваме OrderDto за RabbitMQ с потребителско име от UserService
+            var createdOrder = await _repository.CreateOrderAsync(order);
             var orderDto = new OrderDto
             {
                 Id = order.Id,
-                CustomerName = userDto.UserName,  // взето от UserService
+                CustomerName = userDto.UserName,
                 TotalAmount = order.TotalAmount,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                
             };
-
             _rabbitMqService.PublishOrderCreated(orderDto);
 
             return createdOrder;

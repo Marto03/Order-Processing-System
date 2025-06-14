@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using UserService.DTOs;
+using Shared.DTOs;
 using UserService.Models;
 
 namespace UserService.Mapping
@@ -10,6 +10,7 @@ namespace UserService.Mapping
         public UserProfile()
         {
             CreateMap<UserCreateDto, User>();
+            CreateMap<UserDTO, User>();
         }
     }
 }

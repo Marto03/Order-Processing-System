@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using FluentValidation.Results;
-using UserService.DTOs;
+using Shared.DTOs;
 using UserService.Models;
 using UserService.Repositories;
 

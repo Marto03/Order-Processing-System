@@ -1,24 +1,25 @@
-using UserService.Data;
-using UserService.Repositories;
-using Microsoft.EntityFrameworkCore;
 using FluentValidation;
-using UserService.DTOs;
+using Microsoft.EntityFrameworkCore;
+using Shared.DTOs;
+using UserService.Data;
+using UserService.Mapping;
+using UserService.Repositories;
 using UserService.Services;
 using UserService.Validators;
-using AutoMapper;
-using UserService.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // 1. Add DB Context (PostgreSQL)
 builder.Services.AddDbContext<UserDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("UserConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // 2. Add AutoMapper
 builder.Services.AddAutoMapper(typeof(UserProfile));
+    //builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // 3. Add FluentValidation
 builder.Services.AddScoped<IValidator<UserCreateDto>, UserCreateDtoValidator>();
+builder.Services.AddScoped<IValidator<UserDTO>, UserDTOValidator>();
 
 // 4. Add Repository and Service
 builder.Services.AddScoped<IUserRepository, UserRepository>();

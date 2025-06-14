@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using UserService.DTOs;
+using Shared.DTOs;
 
 namespace UserService.Validators
 {

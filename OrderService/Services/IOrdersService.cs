@@ -1,4 +1,5 @@
 ﻿using OrderService.Models;
+using Shared.DTOs;
 
 namespace OrderService.Services
 {

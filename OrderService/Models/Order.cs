@@ -14,6 +14,9 @@ namespace OrderService.Models
         [Required] // Дата на създаване на поръчката
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+        [Required] // Обща сума на поръчката
+        public decimal TotalAmount { get; set; }
+
         // Статус на поръчката (напр. Pending, Completed, Cancelled)
         [Required]
         public string Status { get; set; } = "Pending";

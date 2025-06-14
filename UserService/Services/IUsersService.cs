@@ -1,4 +1,4 @@
-﻿using UserService.DTOs;
+﻿using Shared.DTOs;
 using UserService.Models;
 
 namespace UserService.Services
