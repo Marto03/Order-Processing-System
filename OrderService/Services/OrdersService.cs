@@ -89,6 +89,7 @@ namespace OrderService.Services
                 Message = "Successfully updated order",
                 Level = "Info"
             });
+            await _publisher.PublishAsync(order, "order.created");
             return order;
         }
         public async Task<Order> CreateAsync(Order order)

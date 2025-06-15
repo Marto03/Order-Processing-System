@@ -22,7 +22,7 @@ namespace NotificationService.Repositories
 
             await _context.SaveChangesAsync(cancellationToken);
         }
-
+        
         public async Task SaveKafkaMessageAsync(string content, CancellationToken cancellationToken = default)
         {
             _context.KafkaMessages.Add(new KafkaMessage

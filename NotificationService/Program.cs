@@ -11,8 +11,8 @@ builder.Services.AddDbContext<NotificationDbContext>(options =>
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 
 // Ако използвам едно factory, не може да се използват 2-те технологии за комуникация!
-//builder.Services.AddHostedService<KafkaConsumerService>();
-builder.Services.AddHostedService<RabbitMqConsumerService>();
+    builder.Services.AddHostedService<KafkaConsumerService>();
+    //builder.Services.AddHostedService<RabbitMqConsumerService>();
 
 // Add services to the container.
 

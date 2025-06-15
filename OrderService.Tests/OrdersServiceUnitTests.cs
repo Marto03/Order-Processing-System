@@ -46,7 +46,7 @@ public class OrdersServiceUnitTests
             })
             .Build();
 
-        var service = new OrdersService(httpClient, orderRepoMock.Object, publisherMock.Object, config);
+        var service = new OrdersService(httpClient, orderRepoMock.Object, publisherMock.Object, config, new LogService());
 
         // Act
         var result = await service.CreateAsync(order);
@@ -82,7 +82,7 @@ public class OrdersServiceUnitTests
             })
             .Build();
 
-        var service = new OrdersService(httpClient, repoMock.Object, publisherMock.Object, config);
+        var service = new OrdersService(httpClient, repoMock.Object, publisherMock.Object, config, new LogService());
 
         // Act & Assert
         await Assert.ThrowsAsync<HttpRequestException>(() => service.CreateAsync(order));
@@ -119,7 +119,7 @@ public class OrdersServiceUnitTests
             })
             .Build();
 
-        var service = new OrdersService(httpClient, repoMock.Object, publisherMock.Object, config);
+        var service = new OrdersService(httpClient, repoMock.Object, publisherMock.Object, config, new LogService());
 
         // Act
         var result = await service.CreateAsync(order);

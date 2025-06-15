@@ -9,8 +9,8 @@ namespace Infrastructure.Extensions
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
-            //services.AddSingleton<IMessageBusPublisher, KafkaProducerService>();
-            services.AddSingleton<IMessageBusPublisher, RabbitMQPublisher>();
+            services.AddSingleton<IMessageBusPublisher, KafkaProducerService>();
+            //services.AddSingleton<IMessageBusPublisher, RabbitMQPublisher>();
             return services;
         }
     }
