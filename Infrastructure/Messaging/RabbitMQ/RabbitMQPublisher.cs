@@ -1,19 +1,18 @@
-﻿using RabbitMQ.Client;
-using Shared.Messaging;
+﻿using Infrastructure.Messaging.Interfaces;
+using RabbitMQ.Client;
 using System.Text;
 using System.Text.Json;
+using Microsoft.Extensions.Configuration;
 
-namespace OrderService.Services
+namespace Infrastructure.Messaging.RabbitMQ
 {
-    // Сървис за изпращане на съобщения в RabbitMQ
-    public class RabbitMQService : IMessageBusPublisher, IDisposable
+    public class RabbitMQPublisher : IMessageBusPublisher, IDisposable
     {
         private readonly IConnection _connection;
         private readonly IModel _channel;
         private readonly string _exchangeName;
-        private readonly string _routingKey;
 
-        public RabbitMQService(IConfiguration configuration)
+        public RabbitMQPublisher(IConfiguration configuration)
         {
             var factory = new ConnectionFactory()
             {
@@ -22,14 +21,13 @@ namespace OrderService.Services
                 Password = configuration["RabbitMQ:Password"]
             };
 
-            _exchangeName = configuration["RabbitMQ:ExchangeName"] ?? "default-exchange";
+            _exchangeName = configuration["RabbitMQ:ExchangeName"];
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
-
-            // Деклариране на exchange тип "direct"
             _channel.ExchangeDeclare(exchange: _exchangeName, type: ExchangeType.Direct, durable: true);
         }
-        public void Publish<T>(T message, string routingKey)
+
+        public Task PublishAsync<T>(T message, string routingKey)
         {
             var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(message));
             var properties = _channel.CreateBasicProperties();
@@ -40,20 +38,8 @@ namespace OrderService.Services
                 routingKey: routingKey,
                 basicProperties: properties,
                 body: body);
-        }
-        public void PublishOrderCreated(object orderDto)
-        {
-            var message = JsonSerializer.Serialize(orderDto);
-            var body = Encoding.UTF8.GetBytes(message);
 
-            var properties = _channel.CreateBasicProperties();
-            properties.Persistent = true; // Запазваме съобщението дори ако RabbitMQ се рестартира
-
-            _channel.BasicPublish(
-                exchange: _exchangeName,
-                routingKey: _routingKey,
-                basicProperties: properties,
-                body: body);
+            return Task.CompletedTask;
         }
 
         public void Dispose()

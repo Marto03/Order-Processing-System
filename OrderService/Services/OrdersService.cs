@@ -1,4 +1,5 @@
-﻿using OrderService.Models;
+﻿using Infrastructure.Messaging.Interfaces;
+using OrderService.Models;
 using OrderService.Repositories;
 using Shared.DTOs;
 
@@ -9,14 +10,14 @@ namespace OrderService.Services
     {
         private readonly HttpClient _httpClient;
         private readonly IOrderRepository _repository;
-        private readonly RabbitMQService _rabbitMqService;
         private readonly string _userServiceBaseUrl;
+        private readonly IMessageBusPublisher _publisher;
 
-        public OrdersService(HttpClient httpClient, IOrderRepository repository, RabbitMQService rabbitMqService, IConfiguration configuration)
+        public OrdersService(HttpClient httpClient, IOrderRepository repository, IMessageBusPublisher publisher, IConfiguration configuration)
         {
             _httpClient = httpClient;
             _repository = repository;
-            _rabbitMqService = rabbitMqService;
+            _publisher = publisher;
             _userServiceBaseUrl = configuration["Services:UserService"];
         }
 
@@ -90,7 +91,7 @@ namespace OrderService.Services
                 CreatedAt = DateTime.UtcNow,
                 
             };
-            _rabbitMqService.PublishOrderCreated(orderDto);
+            await _publisher.PublishAsync(orderDto, "order.created");
 
             return createdOrder;
         }

@@ -1,4 +1,6 @@
 using FluentValidation.AspNetCore;
+using Infrastructure.Extensions;
+using Infrastructure.Messaging.Kafka;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -8,6 +10,7 @@ using OrderService.Middleware;
 using OrderService.Repositories;
 using OrderService.Services;
 using OrderService.Validators;
+using Shared.Messaging;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -48,6 +51,20 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+var messagingType = builder.Configuration["Messaging:Type"]; // "Kafka" или "RabbitMQ"
+
+if (messagingType == "Kafka")
+{
+    builder.Services.AddSingleton<IMessageBusPublisher, KafkaService>();
+}
+else if (messagingType == "RabbitMQ")
+{
+    builder.Services.AddSingleton<IMessageBusPublisher, RabbitMQService>();
+}
+else
+{
+    throw new Exception("Invalid messaging type configured");
+}
 // �������� ���������� (��� ��������� API-��)
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -56,6 +73,8 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddSingleton<RabbitMQService>();
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<JwtTokenService>();
+//builder.Services.AddSingleton<IMessageBusPublisher, RabbitMQService>();
+builder.Services.AddInfrastructure(); // добавя Publisher-a
 
 var app = builder.Build();
 
