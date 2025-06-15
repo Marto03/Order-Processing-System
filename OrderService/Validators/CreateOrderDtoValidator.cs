@@ -8,11 +8,9 @@ namespace OrderService.Validators
     {
         public CreateOrderDtoValidator()
         {
-            RuleFor(x => x.CustomerName)
+            RuleFor(x => x.UserId)
                 .NotEmpty()
-                .WithMessage("Customer name is required")
-                .MinimumLength(3)
-                .WithMessage("Customer name must be at least 3 characters");
+                .WithMessage("UserId is required");
 
             RuleFor(x => x.TotalAmount)
                 .GreaterThan(0)

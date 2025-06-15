@@ -3,7 +3,7 @@
     // Това е DTO-то, което клиентът изпраща при POST заявка
     public class CreateOrderDto
     {
-        public string CustomerName { get; set; } = string.Empty;
+        public int UserId { get; set; }
         public decimal TotalAmount { get; set; }
     }
 }

@@ -30,6 +30,12 @@ namespace OrderService.Repositories
             await _context.SaveChangesAsync();
             return order;
         }
+        public async Task<Order> UpdateOrderAsync(Order order)
+        {
+            _context.Orders.Update(order);
+            await _context.SaveChangesAsync();
+            return order;
+        }
 
         public async Task<bool> DeleteOrderAsync(int id)
         {

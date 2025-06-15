@@ -21,16 +21,52 @@ namespace OrderService.Services
         }
 
 
-        public async Task<IEnumerable<Order>> GetAllAsync()
+        public async Task<IEnumerable<OrderDto>> GetAllAsync()
         {
-            return await _repository.GetAllOrdersAsync();
+            var orders = await _repository.GetAllOrdersAsync();
+
+            var orderDtos = new List<OrderDto>();
+
+            foreach (var order in orders)
+            {
+                string customerName = "Unknown";
+
+                var response = await _httpClient.GetAsync($"{_userServiceBaseUrl}/api/users/{order.UserId}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var userDto = await response.Content.ReadFromJsonAsync<UserDTO>();
+                    if (userDto != null)
+                    {
+                        customerName = userDto.UserName;
+                    }
+                }
+
+                orderDtos.Add(new OrderDto
+                {
+                    Id = order.Id,
+                    CustomerName = customerName,
+                    TotalAmount = order.TotalAmount,
+                    CreatedAt = order.CreatedAt
+                });
+            }
+
+            return orderDtos;
         }
 
         public async Task<Order?> GetByIdAsync(int id)
         {
             return await _repository.GetOrderByIdAsync(id);
         }
-
+        
+        public async Task<Order?> UpdateAsync(int id, decimal totalAmount)
+        {
+            var order = await _repository.GetOrderByIdAsync(id);
+            if (order == null) return null;
+            order.TotalAmount = totalAmount;
+            order.CreatedAt = DateTime.UtcNow;
+            await _repository.UpdateOrderAsync(order);
+            return order;
+        }
         public async Task<Order> CreateAsync(Order order)
         {
             var userResponse = await _httpClient.GetAsync($"{_userServiceBaseUrl}/api/users/{order.UserId}");

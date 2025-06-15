@@ -22,8 +22,7 @@ namespace OrderService.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OrderDto>>> GetAllOrders()
         {
-            var orders = await _orderService.GetAllAsync();
-            var orderDtos = _mapper.Map<IEnumerable<OrderDto>>(orders);
+            var orderDtos = await _orderService.GetAllAsync();
             return Ok(orderDtos);
         }
 
@@ -47,6 +46,15 @@ namespace OrderService.Controllers
             return CreatedAtAction(nameof(GetOrderById), new { id = orderDto.Id }, orderDto);
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateOrder(int id, decimal totalAmount)
+        {
+            var updated = await _orderService.UpdateAsync(id, totalAmount);
+            if (updated == null)
+                return NotFound();
+
+            return Ok(_mapper.Map<OrderDto>(updated));
+        }
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrder(int id)
         {
