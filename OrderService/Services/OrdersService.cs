@@ -12,13 +12,15 @@ namespace OrderService.Services
         private readonly IOrderRepository _repository;
         private readonly string _userServiceBaseUrl;
         private readonly IMessageBusPublisher _publisher;
+        private readonly LogService _logService;
 
-        public OrdersService(HttpClient httpClient, IOrderRepository repository, IMessageBusPublisher publisher, IConfiguration configuration)
+        public OrdersService(HttpClient httpClient, IOrderRepository repository, IMessageBusPublisher publisher, IConfiguration configuration, LogService logService)
         {
             _httpClient = httpClient;
             _repository = repository;
             _publisher = publisher;
             _userServiceBaseUrl = configuration["Services:UserService"];
+            _logService = logService;
         }
 
 
@@ -49,13 +51,26 @@ namespace OrderService.Services
                     TotalAmount = order.TotalAmount,
                     CreatedAt = order.CreatedAt
                 });
+                await _logService.LogAsync(new LogModel
+                {
+                    UserId = order.UserId,
+                    Action = $"Get All Orders",
+                    Message = "Successfully get all order",
+                    Level = "Info"
+                });
             }
-
             return orderDtos;
         }
 
         public async Task<Order?> GetByIdAsync(int id)
         {
+            await _logService.LogAsync(new LogModel
+            {
+                UserId = id,
+                Action = "Get Order",
+                Message = "Successfully get order",
+                Level = "Info"
+            });
             return await _repository.GetOrderByIdAsync(id);
         }
         
@@ -66,6 +81,14 @@ namespace OrderService.Services
             order.TotalAmount = totalAmount;
             order.CreatedAt = DateTime.UtcNow;
             await _repository.UpdateOrderAsync(order);
+
+            await _logService.LogAsync(new LogModel
+            {
+                UserId = order.UserId,
+                Action = $"Updated Order -> Total Amount changed to: {totalAmount}",
+                Message = "Successfully updated order",
+                Level = "Info"
+            });
             return order;
         }
         public async Task<Order> CreateAsync(Order order)
@@ -91,6 +114,13 @@ namespace OrderService.Services
                 CreatedAt = DateTime.UtcNow,
                 
             };
+            await _logService.LogAsync(new LogModel
+            {
+                UserId = order.UserId,
+                Action = $"Created Order -> Order Id: {order.Id}",
+                Message = "Successfully created order",
+                Level = "Info"
+            });
             await _publisher.PublishAsync(orderDto, "order.created");
 
             return createdOrder;
@@ -98,6 +128,13 @@ namespace OrderService.Services
 
         public async Task<bool> DeleteAsync(int id)
         {
+            await _logService.LogAsync(new LogModel
+            {
+                UserId = id,
+                Action = $"Deleted Order",
+                Message = "Successfully deleted order",
+                Level = "Info"
+            });
             return await _repository.DeleteOrderAsync(id);
         }
     }

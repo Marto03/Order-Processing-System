@@ -1,19 +1,34 @@
+using Elasticsearch.Net;
 using FluentValidation.AspNetCore;
 using Infrastructure.Extensions;
 using Infrastructure.Messaging.Kafka;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Nest;
 using OrderService;
 using OrderService.Data;
 using OrderService.Middleware;
 using OrderService.Repositories;
 using OrderService.Services;
 using OrderService.Validators;
+using Serilog;
 using Shared.Messaging;
 using System.Text;
 
+
+Log.Logger = new LoggerConfiguration()
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .WriteTo.DurableHttpUsingFileSizeRolledBuffers(
+        requestUri: "http://localhost:31311", // Logstash HTTP Input порт
+        bufferBaseFileName: "Logs/logbuffer"
+    )
+    .CreateLogger();
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog();
 
 // �������� OrderDbContext � �� ������� �� �������� PostgreSQL
 builder.Services.AddDbContext<OrderDbContext>(options =>
@@ -66,6 +81,7 @@ else
     throw new Exception("Invalid messaging type configured");
 }
 // �������� ���������� (��� ��������� API-��)
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -73,6 +89,7 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddSingleton<RabbitMQService>();
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<JwtTokenService>();
+builder.Services.AddSingleton<LogService>();
 //builder.Services.AddSingleton<IMessageBusPublisher, RabbitMQService>();
 builder.Services.AddInfrastructure(); // добавя Publisher-a
 
