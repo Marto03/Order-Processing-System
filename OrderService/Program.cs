@@ -90,8 +90,10 @@ builder.Services.AddSingleton<RabbitMQService>();
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<JwtTokenService>();
 builder.Services.AddSingleton<LogService>();
+builder.Services.AddSingleton<IRedisService, RedisService>();
+
 //builder.Services.AddSingleton<IMessageBusPublisher, RabbitMQService>();
-    builder.Services.AddInfrastructure(); // добавя Publisher-a
+builder.Services.AddInfrastructure(); // добавя Publisher-a
 
 var app = builder.Build();
 

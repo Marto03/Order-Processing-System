@@ -2,6 +2,7 @@
 using OrderService.Models;
 using OrderService.Repositories;
 using Shared.DTOs;
+using System.Text.Json;
 
 namespace OrderService.Services
 {
@@ -13,14 +14,17 @@ namespace OrderService.Services
         private readonly string _userServiceBaseUrl;
         private readonly IMessageBusPublisher _publisher;
         private readonly LogService _logService;
+        private readonly IRedisService _redis;
 
-        public OrdersService(HttpClient httpClient, IOrderRepository repository, IMessageBusPublisher publisher, IConfiguration configuration, LogService logService)
+        public OrdersService(HttpClient httpClient, IOrderRepository repository, IMessageBusPublisher publisher, IConfiguration configuration,
+            LogService logService, IRedisService redis)
         {
             _httpClient = httpClient;
             _repository = repository;
             _publisher = publisher;
             _userServiceBaseUrl = configuration["Services:UserService"];
             _logService = logService;
+            _redis = redis;
         }
 
 
@@ -33,14 +37,23 @@ namespace OrderService.Services
             foreach (var order in orders)
             {
                 string customerName = "Unknown";
+                var cachedUser = await _redis.GetValueAsync($"user:{order.UserId}");
 
-                var response = await _httpClient.GetAsync($"{_userServiceBaseUrl}/api/users/{order.UserId}");
-                if (response.IsSuccessStatusCode)
+                if (!string.IsNullOrEmpty(cachedUser))
+                    customerName = cachedUser;
+                else
                 {
-                    var userDto = await response.Content.ReadFromJsonAsync<UserDTO>();
-                    if (userDto != null)
+                    var response = await _httpClient.GetAsync($"{_userServiceBaseUrl}/api/users/{order.UserId}");
+
+                    if (response.IsSuccessStatusCode)
                     {
-                        customerName = userDto.UserName;
+                        var userDto = await response.Content.ReadFromJsonAsync<UserDTO>();
+                        if (userDto != null)
+                        {
+                            customerName = userDto.UserName;
+                            // Кешираме името в Redis за следващ път (примерно 5 минути)
+                            await _redis.SetValueAsync($"user:{order.UserId}", userDto.UserName);
+                        }
                     }
                 }
 
@@ -64,6 +77,14 @@ namespace OrderService.Services
 
         public async Task<Order?> GetByIdAsync(int id)
         {
+            var cached = await _redis.GetValueAsync($"order:{id}");
+            if (!string.IsNullOrEmpty(cached))
+                return JsonSerializer.Deserialize<Order>(cached);
+
+            var order = await _repository.GetOrderByIdAsync(id);
+            if (order != null)
+                await _redis.SetValueAsync($"order:{id}", JsonSerializer.Serialize(order));
+
             await _logService.LogAsync(new LogModel
             {
                 UserId = id,
