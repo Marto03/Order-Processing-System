@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+
+    tools {
+        dotnet 'dotnet8' // Увери се, че това име съответства на инсталираната версия в Jenkins
+    }
+
+    environment {
+        DOTNET_ROOT = "/usr/share/dotnet"
+    }
+
+    stages {
+        stage('Restore') {
+            steps {
+                bat 'dotnet restore'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                bat 'dotnet build --no-restore --configuration Release'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                bat 'dotnet test --no-restore --verbosity normal'
+            }
+        }
+
+        // По желание можеш да добавиш публикуване
+        // stage('Publish') {
+        //     steps {
+        //         bat 'dotnet publish -c Release -o out'
+        //     }
+        // }
+    }
+}
