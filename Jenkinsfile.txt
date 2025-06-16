@@ -1,38 +1,29 @@
 pipeline {
     agent any
 
-    tools {
-        dotnet 'dotnet8' // Увери се, че това име съответства на инсталираната версия в Jenkins
-    }
-
-    environment {
-        DOTNET_ROOT = "/usr/share/dotnet"
-    }
-
     stages {
-        stage('Restore') {
+        stage('Checkout') {
             steps {
-                bat 'dotnet restore'
+                git 'https://github.com/Marto03/Order-Processing-System'
             }
         }
 
         stage('Build') {
             steps {
-                bat 'dotnet build --no-restore --configuration Release'
+                bat 'dotnet build'
             }
         }
 
         stage('Test') {
             steps {
-                bat 'dotnet test --no-restore --verbosity normal'
+                bat 'dotnet test'
             }
         }
 
-        // По желание можеш да добавиш публикуване
-        // stage('Publish') {
-        //     steps {
-        //         bat 'dotnet publish -c Release -o out'
-        //     }
-        // }
+        stage('Publish') {
+            steps {
+                bat 'dotnet publish -c Release -o ./publish'
+            }
+        }
     }
 }
