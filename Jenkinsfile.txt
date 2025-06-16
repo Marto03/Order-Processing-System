@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/Marto03/Order-Processing-System'
+                git credentialsId: 'github-token', url: 'https://github.com/Marto03/Order-Processing-System'
             }
         }
 
