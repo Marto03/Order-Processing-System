@@ -47,14 +47,24 @@ namespace OrderService.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateOrder(int id, decimal totalAmount)
+        public async Task<IActionResult> UpdateOrder(int id, [FromBody] UpdateOrderDto dto)
         {
-            var updated = await _orderService.UpdateAsync(id, totalAmount);
+            var updated = await _orderService.UpdateAsync(id, dto.TotalAmount);
             if (updated == null)
                 return NotFound();
 
             return Ok(_mapper.Map<OrderDto>(updated));
         }
+
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> UpdateOrder(int id, decimal totalAmount)
+        //{
+        //    var updated = await _orderService.UpdateAsync(id, totalAmount);
+        //    if (updated == null)
+        //        return NotFound();
+
+        //    return Ok(_mapper.Map<OrderDto>(updated));
+        //}
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrder(int id)
         {

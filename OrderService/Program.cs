@@ -14,6 +14,7 @@ using OrderService.Services;
 using OrderService.Validators;
 using Serilog;
 using Shared.Messaging;
+using StackExchange.Redis;
 using System.Text;
 
 
@@ -95,6 +96,19 @@ builder.Services.AddSingleton<IRedisService, RedisService>();
 //builder.Services.AddSingleton<IMessageBusPublisher, RabbitMQService>();
 builder.Services.AddInfrastructure(); // добавя Publisher-a
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins("http://localhost:5173")
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+                      });
+});
+
 var app = builder.Build();
 
 // Middleware �� ���������� � Swagger
@@ -103,6 +117,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
+app.UseCors(MyAllowSpecificOrigins);
 
 // Configure the HTTP request pipeline.
 
@@ -115,4 +132,11 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+var redis = ConnectionMultiplexer.Connect("localhost:6379");
+var db = redis.GetDatabase();
+await db.StringSetAsync("test:key", "hello");
+var value = await db.StringGetAsync("test:key");
+Console.WriteLine(value.ToString()); // Очаква се "hello"
+
 app.Run();
+

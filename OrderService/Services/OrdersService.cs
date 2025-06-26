@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Messaging.Interfaces;
+using Nest;
 using OrderService.Models;
 using OrderService.Repositories;
 using Shared.DTOs;
@@ -30,48 +31,74 @@ namespace OrderService.Services
 
         public async Task<IEnumerable<OrderDto>> GetAllAsync()
         {
-            var orders = await _repository.GetAllOrdersAsync();
+            var orders = (await _repository.GetAllOrdersAsync());
 
-            var orderDtos = new List<OrderDto>();
+            // Get all unique userIds
+            var userIds = orders.Select(o => o.UserId).Distinct();
 
-            foreach (var order in orders)
+            // Try to get all user names from Redis in parallel
+            var redisTasks = userIds.ToDictionary(
+                id => id,
+                id => _redis.GetValueAsync($"user:{id}")
+            );
+            await Task.WhenAll(redisTasks.Values);
+
+            // Find which userIds are missing from cache
+            var missingUserIds = redisTasks
+                .Where(kvp => string.IsNullOrEmpty(kvp.Value.Result))
+                .Select(kvp => kvp.Key)
+                .ToList();
+
+            // Batch fetch missing users from User Service (if API supports it)
+            var userNames = new Dictionary<int, string>();
+            if (missingUserIds.Any())
             {
-                string customerName = "Unknown";
-                var cachedUser = await _redis.GetValueAsync($"user:{order.UserId}");
-
-                if (!string.IsNullOrEmpty(cachedUser))
-                    customerName = cachedUser;
-                else
+                // Example: POST /api/users/batch with { ids: [1,2,3] }
+                var response = await _httpClient.PostAsJsonAsync(
+                    $"{_userServiceBaseUrl}/api/users/batch",
+                    missingUserIds
+                );
+                if (response.IsSuccessStatusCode)
                 {
-                    var response = await _httpClient.GetAsync($"{_userServiceBaseUrl}/api/users/{order.UserId}");
-
-                    if (response.IsSuccessStatusCode)
+                    var users = await response.Content.ReadFromJsonAsync<List<UserDTO>>();
+                    foreach (var user in users)
                     {
-                        var userDto = await response.Content.ReadFromJsonAsync<UserDTO>();
-                        if (userDto != null)
-                        {
-                            customerName = userDto.UserName;
-                            // Кешираме името в Redis за следващ път (примерно 5 минути)
-                            await _redis.SetValueAsync($"user:{order.UserId}", userDto.UserName);
-                        }
+                        var cached = await _redis.GetValueAsync($"user:{user.Id}");
+                        if (cached == null)
+                            Console.WriteLine($"Cache miss for user:{user.Id}");
+
+                        userNames[user.Id] = user.UserName;
+                        // Set in Redis for future
+                        await _redis.SetValueAsync($"user:{user.Id}", user.UserName);
                     }
                 }
-
-                orderDtos.Add(new OrderDto
-                {
-                    Id = order.Id,
-                    CustomerName = customerName,
-                    TotalAmount = order.TotalAmount,
-                    CreatedAt = order.CreatedAt
-                });
-                await _logService.LogAsync(new LogModel
-                {
-                    UserId = order.UserId,
-                    Action = $"Get All Orders",
-                    Message = "Successfully get all order",
-                    Level = "Info"
-                });
             }
+
+            // Merge Redis and HTTP results
+            foreach (var kvp in redisTasks)
+            {
+                if (!string.IsNullOrEmpty(kvp.Value.Result))
+                    userNames[kvp.Key] = kvp.Value.Result;
+            }
+
+            // Build DTOs
+            var orderDtos = orders.Select(order => new OrderDto
+            {
+                Id = order.Id,
+                CustomerName = userNames.TryGetValue(order.UserId, out var name) ? name : "Unknown",
+                TotalAmount = order.TotalAmount,
+                CreatedAt = order.CreatedAt
+            }).ToList();
+
+            // Log once for the whole operation
+            await _logService.LogAsync(new LogModel
+            {
+                UserId = 0,
+                Action = "Get All Orders",
+                Message = $"Successfully retrieved {orders.Count()} orders",
+                Level = "Info"
+            });
+
             return orderDtos;
         }
 
