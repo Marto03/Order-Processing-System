@@ -102,26 +102,67 @@ namespace OrderService.Services
             return orderDtos;
         }
 
-        public async Task<Order?> GetByIdAsync(int id)
+        public async Task<OrderDto?> GetByIdAsync(int id)
         {
+            // Опитай да вземеш от Redis
             var cached = await _redis.GetValueAsync($"order:{id}");
+            Order? order;
             if (!string.IsNullOrEmpty(cached))
-                return JsonSerializer.Deserialize<Order>(cached);
+            {
+                order = JsonSerializer.Deserialize<Order>(cached);
+            }
+            else
+            {
+                order = await _repository.GetOrderByIdAsync(id);
+                if (order == null)
+                    return null;
 
-            var order = await _repository.GetOrderByIdAsync(id);
-            if (order != null)
+                // Кеширай за в бъдеще
                 await _redis.SetValueAsync($"order:{id}", JsonSerializer.Serialize(order));
+            }
+
+            string? userName = null;
+
+            // Опитай първо от кеша
+            var cachedUserName = await _redis.GetValueAsync($"user:{order.UserId}");
+            if (!string.IsNullOrEmpty(cachedUserName))
+            {
+                userName = cachedUserName;
+            }
+            else
+            {
+                // Вземи от UserService по userId
+                var response = await _httpClient.GetAsync($"{_userServiceBaseUrl}/api/users/{order.UserId}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var user = await response.Content.ReadFromJsonAsync<UserDTO>();
+                    if (user != null)
+                    {
+                        userName = user.UserName;
+                        await _redis.SetValueAsync($"user:{user.Id}", user.UserName);
+                    }
+                }
+            }
+
+            var dto = new OrderDto
+            {
+                Id = order.Id,
+                CustomerName = userName ?? "Неизвестен",
+                TotalAmount = order.TotalAmount,
+                CreatedAt = order.CreatedAt
+            };
 
             await _logService.LogAsync(new LogModel
             {
-                UserId = id,
-                Action = "Get Order",
-                Message = "Successfully get order",
+                UserId = order.UserId,
+                Action = $"Get Order {id}",
+                Message = $"Order {id} retrieved",
                 Level = "Info"
             });
-            return await _repository.GetOrderByIdAsync(id);
+
+            return dto;
         }
-        
+
         public async Task<Order?> UpdateAsync(int id, decimal totalAmount)
         {
             var order = await _repository.GetOrderByIdAsync(id);
@@ -138,6 +179,7 @@ namespace OrderService.Services
                 Level = "Info"
             });
             await _publisher.PublishAsync(order, "order.created");
+            await _redis.SetValueAsync($"order:{order.Id}", JsonSerializer.Serialize(order));
             return order;
         }
         public async Task<Order> CreateAsync(Order order)

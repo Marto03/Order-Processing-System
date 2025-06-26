@@ -49,7 +49,7 @@ const API_URL = 'https://localhost:7067/api/Order';
 //}
 
 
-export const getOrders = () => fetch(API_URL).then(res => res.json());
+export const getAllOrders = () => fetch(API_URL).then(res => res.json());
 
 export const getOrderById = (id: string) =>
     fetch(`${API_URL}/${id}`).then(res => {

@@ -7,7 +7,7 @@ namespace OrderService.Services
     public interface IOrdersService
     {
         Task<IEnumerable<OrderDto>> GetAllAsync();
-        Task<Order?> GetByIdAsync(int id);
+        Task<OrderDto?> GetByIdAsync(int id);
         Task<Order?> UpdateAsync(int id, decimal totalAmount);
         Task<Order> CreateAsync(Order order);
         Task<bool> DeleteAsync(int id);
